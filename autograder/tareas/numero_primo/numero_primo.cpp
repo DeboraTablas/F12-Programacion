@@ -1,7 +1,6 @@
- #include <cmath> y sqrt(n)
- #include <iostream>
+#include <cmath> y sqrt(n)
+#include <iostream>
 
- 
 using namespace std;
 
 int es_primo(int n) {
@@ -18,9 +17,9 @@ int main() {
     cin >> n;
 
     if (es_primo(n))
-        cout << "primo";
+        std::cout << "primo";
     else
-        cout << "no primo";
+        std::cout << "no primo";
 
     return 0;
 }
