@@ -1,81 +1,110 @@
 #include <iostream>
 #include <vector>
-#include <string> 
-
+#include <string>
 using namespace std;
 
 void burbuja(vector<int>& arr) {
-    int n = arr.size();
+
+    int n= arr.size();
     for (int i = 0; i < n - 1; i++) {
         bool intercambiado = false;
-        for (int j = 0; j < n - 1 - i; j++) {
+
+        for (int j = 0; j < n - 1- i; j++){
+            
             if (arr[j] > arr[j + 1]) {
                 swap(arr[j], arr[j + 1]);
                 intercambiado = true;
             }
         }
-        if (!intercambiado) break;
+        
+        if (!intercambiado) {
+            break;
+        }
     }
 }
 
 void seleccion(vector<int>& arr) {
     int n = arr.size();
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < n-1; i++) {
         int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] < arr[min_idx]) min_idx = j;
-        }
-        if (min_idx != i) swap(arr[i], arr[min_idx]);
+
+        for (int j = i; j < n; j++) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        } 
+        if (min_idx != i) {
+            swap(arr[i], arr[min_idx]);
+        }  
     }
 }
 
-vector<int> mezclar(const vector<int>& izq, const vector<int>& der) {
+vector <int> mezclar(const vector <int>& izq, const vector<int>& der) {
     vector<int> resultado;
-    resultado.reserve(izq.size() + der.size());
-    int i = 0, j = 0;
-    while (i < (int)izq.size() && j < (int)der.size()) {
-        if (izq[i] <= der[j]) resultado.push_back(izq[i++]);
-        else resultado.push_back(der[j++]);
+    int i = 0;
+    int j = 0;
+
+    while (i < izq.size() && j < der.size()) {
+        if ((izq[i] <= der[j])) {
+            resultado.push_back(izq[i]);
+            i++;
+        }
+        else {
+            resultado.push_back(der[j]);
+            j++;
+        }
     }
-    while (i < (int)izq.size()) resultado.push_back(izq[i++]);
-    while (j < (int)der.size()) resultado.push_back(der[j++]);
+    while (i < izq.size()) {
+        resultado.push_back(izq[i]);
+        i++;
+    }
+    while (j < der.size()) {
+        resultado.push_back(der[j]);
+        j++;
+    }
     return resultado;
 }
 
-vector<int> mergesort(const vector<int>& arr) {
-    if ((int)arr.size() <= 1) return arr;
-    int medio = arr.size() / 2;
-    vector<int> izq = mergesort(vector<int>(arr.begin(), arr.begin() + medio));
-    vector<int> der = mergesort(vector<int>(arr.begin() + medio, arr.end()));
-    return mezclar(izq, der);
+vector<int> mergesort(const vector<int>& arr){
+    if (arr.size() <= 1) {
+        return arr;
+    }
+    
+    int medio=arr.size()/2;
+
+    vector<int> izq(arr.begin(), arr.begin()+ medio);
+    vector<int> der(arr.begin()+ medio, arr.end());
+
+    vector<int> izquierda= mergesort(izq);
+    vector<int> derecha= mergesort(der);
+
+    return mezclar (izquierda, derecha);
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     string algoritmo;
     int n;
-    cin >> algoritmo >> n;
+    cin  >> algoritmo  >> n;
     vector<int> arr(n);
-    for (int i = 0; i < n; i++) cin >> arr[i];
-
-    vector<int> resultado;
-
+    for (int i = 0; i < n; i++) {
+        cin >> arr [ i ];
+    }
     if (algoritmo == "burbuja") {
         burbuja(arr);
-        resultado = arr;
-    } else if (algoritmo == "seleccion") {
+    }
+    
+    else  if (algoritmo == "seleccion") {
         seleccion(arr);
-        resultado = arr;
-    } else if (algoritmo == "mergesort") {
-        resultado = mergesort(arr);
     }
 
-    for (int i = 0; i < n; i++) {
-        if (i > 0) cout << ' ';
-        cout << resultado[i];
+    else if (algoritmo =="mergesort") {
+        arr= mergesort(arr);
     }
-    cout << '\n';
+
+    //imprimir datos
+    for (int i = 0; i < n; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
     return 0;
 }
